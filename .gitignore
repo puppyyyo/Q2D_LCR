@@ -1,0 +1,14 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore Python virtual environment directory
+.legal_venv/
+
+# Ignore environment variable configuration files (may contain sensitive information)
+.env
+
+# Ignore refactoring files
+*refactor
