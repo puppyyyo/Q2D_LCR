@@ -150,7 +150,7 @@ def construct_data_w_more_neg(format_data, neg_num):
 
     calculate_avg_length(format_data)
 
-    output_path = f"dataset/lcaet_ft_data/paragraph_level/{crime_type}_judgment.json"
+    output_path = f"dataset/lcaet_ft_data/paragraph_level/{crime_type}_judgment_test.json"
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     ut.save_json(output_path, format_data)
 

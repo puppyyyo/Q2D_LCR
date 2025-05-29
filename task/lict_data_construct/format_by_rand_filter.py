@@ -1,7 +1,29 @@
+"""
+Script: format_by_rand_filter.py
+
+Program:
+    Pseudo data generator for legal judgment dataset.
+    Choose pseudo-qeustion from chunks and adjacent chunks as positive evidence.
+    Negative samples are drawn from the entire dataset's chunks.
+
+Usage:
+    python format_by_rand_filter.py --crime_type <crime_type> --version <version>
+
+Arguments:
+    --crime_type   (str)  : Specify the crime type, e.g., larceny, forgery, snatch, fraud, etc.
+    --version      (str)  : Specify dataset version, e.g., v1, v2.
+
+Example:
+    python format_by_rand_filter.py --crime_type larceny --version v1
+"""
+
 import os
+import sys
 import random
 import logging
 import argparse
+
+sys.path.append(os.getcwd())
 
 import lib.utils as ut
 
@@ -12,7 +34,6 @@ args = parser.parse_args()
 
 # parameter setting
 crime_type = args.crime_type
-index_type = "judgment"
 version = args.version
 
 pos_num = 1
@@ -74,7 +95,7 @@ def process_dataset(dataset, corpus_chunks, pos_num, neg_num):
 
 
 def main():
-    dataset_path = f"dataset/preprocess/lict/label_chunks/{crime_type}/{crime_type}_{index_type}_{version}.json"
+    dataset_path = f"dataset/preprocess/lict/label_chunks/{crime_type}/{crime_type}_judgment_{version}.json"
     dataset = ut.load_json(dataset_path)
 
     corpus_chunks = [c for entry in dataset for c in entry['chunks']]
@@ -99,7 +120,7 @@ def main():
     output_dir = f"dataset/lict_ft_data/{crime_type}"
     os.makedirs(output_dir, exist_ok=True)
 
-    output_path = f"{output_dir}/{crime_type}_{index_type}_{version}.json"
+    output_path = f"{output_dir}/{crime_type}_judgment_{version}.json"
     ut.save_json(output_path, formatted_data)
     logging.info(f"Data save to {output_path}")
 

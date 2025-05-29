@@ -17,3 +17,15 @@ __pycache__/
 logs/
 *.log
 **/logs/
+
+# Ignore dataset files
+dataset/
+
+# Ignore model files
+cache/
+models/
+**/checkpoint*/
+
+# Ignore experiment files
+experiment/
+*.csv

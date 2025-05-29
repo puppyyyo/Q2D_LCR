@@ -2,9 +2,9 @@
 # Program:
 #       This script is for fine-tuning the BGE model for legal vase retrieval.
 # Usage:
-#       bash 2.Finetuning.sh <model> <crime_type> <dataset_version> <split>
+#       bash Finetuning_LICT.sh <model> <crime_type> <dataset_version> <split>
 # Example:
-#       bash 2.Finetuning.sh base larceny v1 full
+#       bash Finetuning_LICT.sh m3 larceny v1 full
 # History:
 #       2025/05/28  First realse
 

@@ -1,57 +1,38 @@
 #!/bin/bash
+# Script: run.sh
 # Program:
-#       This script automates the processing of crime dataset versions.
-#       It sequentilly runs `1.run_construct_dataset.py` and `2.run_format_data.py`.
+#       Process legal judgments into LICT format.
+#       Supports two dataset versions:
+#         - v1: W/O CSA, uses `format_by_rand_filter.py`
+#         - v2: W/ CSA, uses `format_by_rand_vaild.py`
 # Usage:
-#       bash run.sh <crime_type> <version>
+#       bash task/lict_refactor/run.sh <crime_type> <dataset_version: v1|v2>
 # Example:
-#       bash run.sh larceny v1
+#       bash task/lict_refactor/run.sh larceny v1       # Process without CSA
+#       bash task/lict_refactor/run.sh larceny v2       # Process with CSA
 # History:
-#       2025/05/12  First realse
+#       2025/05/29  First release
 
-set -e
-
-export PYTHONPATH=$(pwd)
-
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 <crime_type> <version>"
-    echo "Example: $0 larceny v1"
+# Check arguments
+if [ "$#" -ne 2 ]; then
+    echo "[ERROR] Usage: bash $0 <crime_type> <dataset_version: v1|v2>"
     exit 1
 fi
 
 CRIME_TYPE=$1
 VERSION=$2
-
-echo "Processing crime_type: $CRIME_TYPE, version: $VERSION"
-
-# Construct script mapping
 SCRIPT_DIR="task/lict_data_construct"
-CONSTRUCT_SCRIPT="$SCRIPT_DIR/1.construct_dataset_${VERSION}.py"
 
-# Format script mapping
-case $VERSION in
-    "v1") FORMAT_SCRIPT="$SCRIPT_DIR/2.format_dataset_random_from_filter.py" ;;
-    "v2") FORMAT_SCRIPT="$SCRIPT_DIR/2.format_dataset_random_from_vaild.py" ;;
-    *) echo "Error: Unknown version '$VERSION'"; exit 1 ;;
+# Select formatter by version
+case "$VERSION" in
+    v1) FORMAT_SCRIPT="format_by_rand_filter.py" ;;
+    v2) FORMAT_SCRIPT="format_by_rand_vaild.py" ;;
+    *)
+        echo "[ERROR] Invalid dataset_version: $VERSION. Use 'v1' or 'v2'."
+        exit 1
+        ;;
 esac
 
-
-if [ ! -f "$CONSTRUCT_SCRIPT" ]; then
-    echo "Error: $CONSTRUCT_SCRIPT not found!"
-    exit 1
-fi
-
-if [ ! -f "$FORMAT_SCRIPT" ]; then
-    echo "Error: $FORMAT_SCRIPT not found!"
-    exit 1
-fi
-
-# 執行 Construct Dataset
-echo "Running $CONSTRUCT_SCRIPT..."
-python "$CONSTRUCT_SCRIPT" --crime_type "$CRIME_TYPE" --version "$VERSION"
-
-# 執行 Format Dataset
-echo "Running $FORMAT_SCRIPT..."
-python "$FORMAT_SCRIPT" --crime_type "$CRIME_TYPE" --version "$VERSION"
-
-echo "$CRIME_TYPE $VERSION process complete!"
+# Run processing
+python "${SCRIPT_DIR}/construct_chunks.py" --crime_type "$CRIME_TYPE" --version "$VERSION"
+python "${SCRIPT_DIR}/${FORMAT_SCRIPT}" --crime_type "$CRIME_TYPE" --version "$VERSION"

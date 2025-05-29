@@ -6,3 +6,7 @@ numpy==1.26.4
 pytrec_eval==0.5
 python-dotenv==1.0.1
 openai==1.61.1
+wheel==0.45.1
+flash_attn==1.0.5
+deepspeed==0.16.3
+tensorboard==2.18.0

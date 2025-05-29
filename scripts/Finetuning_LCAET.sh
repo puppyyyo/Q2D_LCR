@@ -2,9 +2,9 @@
 # Program:
 #       This script is for fine-tuning the BGE model for legal vase retrieval.
 # Usage:
-#       bash 2.2.Finetuning_lcaet.sh <model> <crime_type> <lcaet_type> <split>
+#       bash Finetuning_LCAET.sh <model> <crime_type> <lcaet_type> <split>
 # Example:
-#       bash 2.2.Finetuning_lcaet.sh m3 larceny full
+#       bash Finetuning_LCAET.sh m3 larceny full
 # History:
 #       2025/05/28  First realse
 
@@ -27,7 +27,8 @@ case "$MODEL" in
         MODEL_TYPE="base"
 
         # 1-stage, like paragraph-level and sentence-level
-        MODEL_NAME="./models/lict/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
+        # MODEL_NAME="./models/lict/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
+        MODEL_NAME="puppyyyo/${CRIME_TYPE}-${MODEL_TYPE}-ICT_v2"
 
         TRAIN_MODULE="FlagEmbedding.finetune.embedder.encoder_only.base"
         QUERY_MAX_LEN="512"
@@ -37,7 +38,8 @@ case "$MODEL" in
         MODEL_TYPE="large"
 
         # 1-stage, like paragraph-level and sentence-level
-        MODEL_NAME="./models/lict/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
+        # MODEL_NAME="./models/lict/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
+        MODEL_NAME="puppyyyo/${CRIME_TYPE}-${MODEL_TYPE}-ICT_v2"
 
         TRAIN_MODULE="FlagEmbedding.finetune.embedder.encoder_only.base"
         QUERY_MAX_LEN="512"
@@ -47,7 +49,8 @@ case "$MODEL" in
         MODEL_TYPE="m3"      
 
         # 1-stage, like paragraph-level and sentence-level
-        MODEL_NAME="./models/lict/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
+        # MODEL_NAME="./models/lict/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
+        MODEL_NAME="puppyyyo/${CRIME_TYPE}-${MODEL_TYPE}-ICT_v2"
 
         TRAIN_MODULE="FlagEmbedding.finetune.embedder.encoder_only.m3"
         QUERY_MAX_LEN="2048"
@@ -84,7 +87,7 @@ NUM_GPUS=$(nvidia-smi -L | wc -l)
 NPROC_PER_NODE=${NUM_GPUS:-2}
 
 # 1-stage, like paragraph-level and sentence-level
-LOG_DIR="logs/lcaet/${CRIME_TYPE}/${SPLIT}/${LCAET_TYPE}"
+LOG_DIR="logs/lcaet/${LCAET_TYPE}/${SPLIT}/${CRIME_TYPE}"
 
 STDOUT_LOG="${LOG_DIR}/${MODEL_TYPE}-ICT_v2-train_stdout.log"
 STDERR_LOG="${LOG_DIR}/${MODEL_TYPE}-ICT_v2-train_stderr.log"
@@ -122,7 +125,7 @@ torchrun \
     --logging_steps 100 \
     --save_strategy epoch \
     --negatives_cross_device \
-    --newerature 0.02 \
+    --temperature 0.02 \
     --sentence_pooling_method cls \
     --normalize_embeddings True \
     --kd_loss_type kl_div \
