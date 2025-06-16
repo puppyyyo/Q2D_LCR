@@ -28,7 +28,7 @@ case "$MODEL" in
 
         # 1-stage, like paragraph-level and sentence-level
         # MODEL_NAME="./models/lict/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
-        MODEL_NAME="puppyyyo/${CRIME_TYPE}-${MODEL_TYPE}-ICT_v2"
+        # MODEL_NAME="puppyyyo/${CRIME_TYPE}-${MODEL_TYPE}-ICT_v2"
 
         TRAIN_MODULE="FlagEmbedding.finetune.embedder.encoder_only.base"
         QUERY_MAX_LEN="512"
@@ -39,7 +39,7 @@ case "$MODEL" in
 
         # 1-stage, like paragraph-level and sentence-level
         # MODEL_NAME="./models/lict/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
-        MODEL_NAME="puppyyyo/${CRIME_TYPE}-${MODEL_TYPE}-ICT_v2"
+        # MODEL_NAME="puppyyyo/${CRIME_TYPE}-${MODEL_TYPE}-ICT_v2"
 
         TRAIN_MODULE="FlagEmbedding.finetune.embedder.encoder_only.base"
         QUERY_MAX_LEN="512"
@@ -48,9 +48,17 @@ case "$MODEL" in
     "m3")
         MODEL_TYPE="m3"      
 
-        # 1-stage, like paragraph-level and sentence-level
+        # raw_test
+        # 1-stage
+        # MODEL_NAME="BAAI/bge-m3"
+        # 2-stage
+        MODEL_NAME="./models/lcaet/d2p/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-raw"
+        
+        # m3 with LICT
+        # 1-stage
         # MODEL_NAME="./models/lict/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
-        MODEL_NAME="puppyyyo/${CRIME_TYPE}-${MODEL_TYPE}-ICT_v2"
+        # 2-stage
+        # MODEL_NAME="puppyyyo/${CRIME_TYPE}-${MODEL_TYPE}-ICT_v2"
 
         TRAIN_MODULE="FlagEmbedding.finetune.embedder.encoder_only.m3"
         QUERY_MAX_LEN="2048"
@@ -71,8 +79,11 @@ CACHE_DIR="./cache/model"
 TRAIN_DATA="./dataset/lcaet_ft_data/${LCAET_TYPE}/${SPLIT}/${CRIME_TYPE}_judgment.json"
 CACHE_PATH="./cache/data"
 
-# 1-stage, like paragraph-level and sentence-level
-OUTPUT_DIR="./models/lcaet/${LCAET_TYPE}/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
+# 1-stage
+# OUTPUT_DIR="./models/lcaet/${LCAET_TYPE}/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
+
+# 2-stage
+OUTPUT_DIR="./models/lcaet/d2${LCAET_TYPE}/${SPLIT}/${CRIME_TYPE}-${MODEL_TYPE}-lict_v2"
 DEEPSPEED_CONFIG="ds_config/ds_stage1.json"
 
 EPOCHS="3"
@@ -86,8 +97,11 @@ PASSAGE_MAX_LEN=${PASSAGE_MAX_LEN}
 NUM_GPUS=$(nvidia-smi -L | wc -l)
 NPROC_PER_NODE=${NUM_GPUS:-2}
 
-# 1-stage, like paragraph-level and sentence-level
-LOG_DIR="logs/lcaet/${LCAET_TYPE}/${SPLIT}/${CRIME_TYPE}"
+# 1-stage
+# LOG_DIR="logs/lcaet/${LCAET_TYPE}/${SPLIT}/${CRIME_TYPE}"
+
+# 2-stage
+LOG_DIR="logs/lcaet/d2${LCAET_TYPE}/${SPLIT}/${CRIME_TYPE}"
 
 STDOUT_LOG="${LOG_DIR}/${MODEL_TYPE}-ICT_v2-train_stdout.log"
 STDERR_LOG="${LOG_DIR}/${MODEL_TYPE}-ICT_v2-train_stderr.log"

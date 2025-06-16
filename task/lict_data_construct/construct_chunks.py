@@ -14,7 +14,7 @@ Arguments:
                    v2: Process chunks with CRF-based classification (CSA).
 
 Example:
-    python construct_chunks.py --crime_type larceny --use_CSA
+    python construct_chunks.py --crime_type larceny --version v1
 """
 
 import os

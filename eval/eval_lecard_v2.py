@@ -7,9 +7,9 @@ from FlagEmbedding import FlagModel
 from datasets import load_dataset
 from FlagEmbedding.abc.evaluation.utils import evaluate_metrics
 
-crime_type = "fraud"
+crime_type = "snatch"
 model_type = "m3"
-split = "subset"
+split = "full"
 
 def instance_model(model_name):
     return FlagModel(
@@ -58,13 +58,24 @@ def main():
     k_values = [1, 5, 10, 20, 50]
     top_k = 100
 
+    # version_list = [
+    #     "hfl/chinese-bert-wwm-ext",
+    #     "hfl/chinese-roberta-wwm-ext",
+    #     "thunlp/Lawformer",
+    #     "CSHaitao/SAILER_zh",
+    #     "BAAI/bge-base-zh-v1.5",
+    #     "BAAI/bge-large-zh-v1.5",
+    #     "BAAI/bge-m3"
+    # ]
+
     version_list = [
-        f"./models/lcaet/d2p/{split}/{crime_type}-{model_type}-raw",
-        f"./models/lcaet/p2s/{split}/{crime_type}-{model_type}-raw",
-        f"./models/lcaet/d2p2s/{split}/{crime_type}-{model_type}-raw"
+        f"puppyyyo/{crime_type}-{model_type}-{split}-ICT_v2",
+        f"puppyyyo/{crime_type}-{model_type}-{split}-ICT_v2-LCAET_d2p",
+        f"puppyyyo/{crime_type}-{model_type}-{split}-ICT_v2-LCAET_p2s",
+        f"puppyyyo/{crime_type}-{model_type}-{split}-ICT_v2-LCAET_d2p2s"
     ]
 
-    dataset_path = f"dataset/eval_data_syn_500/{crime_type}/format"
+    dataset_path = f"dataset/eval_data_lecard_v2/corpus500_d2d"
     corpus = load_dataset("json", data_files=f"{dataset_path}/corpus.json")["train"]
     queries = load_dataset("json", data_files=f"{dataset_path}/queries.json")["train"]
     qrels = load_dataset("json", data_files=f"{dataset_path}/qrels.json")["train"]
