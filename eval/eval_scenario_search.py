@@ -7,7 +7,7 @@ from FlagEmbedding import FlagModel
 from datasets import load_dataset
 from FlagEmbedding.abc.evaluation.utils import evaluate_metrics
 
-crime_type = "fraud"
+crime_type = "larceny"
 model_type = "m3"
 split = "subset"
 
@@ -59,9 +59,15 @@ def main():
     top_k = 100
 
     version_list = [
-        f"./models/lcaet/d2p/{split}/{crime_type}-{model_type}-raw",
-        f"./models/lcaet/p2s/{split}/{crime_type}-{model_type}-raw",
-        f"./models/lcaet/d2p2s/{split}/{crime_type}-{model_type}-raw"
+        "BAAI/bge-m3",
+        f"./models/lict/data_num_ablation/{crime_type}-{model_type}-lict_v2_50",
+        f"./models/lict/data_num_ablation/{crime_type}-{model_type}-lict_v2_100",
+        f"./models/lict/data_num_ablation/{crime_type}-{model_type}-lict_v2_200",
+        f"./models/lict/data_num_ablation/{crime_type}-{model_type}-lict_v2_300",
+        f"./models/lict/data_num_ablation/{crime_type}-{model_type}-lict_v2_400",
+        f"./models/lict/data_num_ablation/{crime_type}-{model_type}-lict_v2_500",
+        f"./models/lict/data_num_ablation/{crime_type}-{model_type}-lict_v2_600",
+        f"puppyyyo/{crime_type}-{model_type}-subset-ICT_v2"
     ]
 
     dataset_path = f"dataset/eval_data_syn_500/{crime_type}/format"

@@ -29,3 +29,5 @@ models/
 # Ignore experiment files
 experiment/
 *.csv
+
+**test**
